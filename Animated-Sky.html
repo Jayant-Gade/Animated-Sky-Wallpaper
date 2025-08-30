@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Falling Stars Animation</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: radial-gradient(
+          ellipse at bottom,
+          #0d1d31 0%,
+          #0c0d13 100%
+        );
+        overflow: hidden;
+        margin: 0;
+      }
+      .sun {
+        width: 100px;
+        height: 100px;
+        left: -50%;
+        top: -50%;
+        transform: scale(0); /* Start tiny */
+        transform-origin: center center;
+        position: absolute;
+        animation: blowout 2s forwards ease-in-out;
+      }
+      .sun-glow {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        transform: scale(0); /* Start tiny */
+        background: radial-gradient(
+          circle,
+          rgb(255, 204, 0) 0%,
+          rgba(255, 150, 0, 0.2) 60%,
+          transparent 100%
+        );
+        border-radius: 50%;
+        filter: blur(40px);
+        animation: blowout 2s forwards ease-in-out,
+          pulseGlow 3s ease-in-out infinite 2s;
+      }
+
+      @keyframes pulseGlow {
+        0%,
+        100% {
+          opacity: 0.7;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.1);
+        }
+      }
+      .day-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgb(0, 238, 255); /* transparent white */
+        pointer-events: none; /* allows interactions with elements above */
+        z-index: -10; /* stay behind everything */
+        transition: background-color 5s ease-in-out;
+        opacity: 100%;
+      }
+      .moon {
+        width: 100px;
+        height: 100px;
+        left: 50%;
+        top: 50%;
+        transform: scale(0); /* Start tiny */
+        transform-origin: center center;
+        position: absolute;
+        animation: blowout 2s forwards ease-in-out;
+      }
+      .moon-glow {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 300px;
+        height: 300px;
+        transform: translate(-50%, -50%);
+        background: radial-gradient(
+          circle,
+          rgba(208, 251, 255, 0.586) 0%,
+          rgba(176, 214, 255, 0.2) 60%,
+          transparent 100%
+        );
+        border-radius: 50%;
+        filter: blur(40px);
+        animation: pulseGlow 3s ease-in-out infinite;
+        z-index: 0;
+      }
+      .center-dot {
+        position: absolute;
+        left: 50%;
+        top: 99%;
+        width: 8px;
+        height: 8px;
+        background: #fff;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+      }
+      @keyframes blowout {
+        to {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes skyFade {
+        from {
+          background: linear-gradient(to top, #001d3d 0%, #001d3d 100%);
+        }
+        to {
+          background: linear-gradient(to top, #ffcc70 0%, #87ceeb 100%);
+        }
+      }
+
+      .stars {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 120%;
+        transform: rotate(-40deg);
+      }
+
+      .star {
+        position: absolute;
+        left: 0;
+        width: 0em;
+        height: 2px;
+        color: white;
+        background: linear-gradient(45deg, currentColor, transparent);
+        border-radius: 50%;
+        filter: drop-shadow(0 0 6px currentColor);
+        transform: translate3d(150em, 0, 0);
+        animation: fall 9s linear infinite, tail-fade 9s ease-out infinite;
+      }
+
+      .star::before,
+      .star::after {
+        position: absolute;
+        content: "";
+        top: 0;
+        left: calc(1em / -2);
+        width: 1em;
+        height: 100%;
+        background: linear-gradient(
+          45deg,
+          transparent,
+          currentColor,
+          transparent
+        );
+        border-radius: inherit;
+        animation: blink 1s linear infinite;
+      }
+
+      .star::before {
+        transform: rotate(45deg);
+      }
+
+      .star::after {
+        transform: rotate(-45deg);
+      }
+
+      @keyframes fall {
+        to {
+          transform: translate3d(-90em, 0, 0);
+        }
+      }
+
+      @keyframes tail-fade {
+        0%,
+        50% {
+          width: 6em;
+          opacity: 1;
+        }
+        70%,
+        80% {
+          width: 0;
+          opacity: 0.4;
+        }
+        100% {
+          width: 0;
+          opacity: 0;
+        }
+      }
+
+      @keyframes blink {
+        50% {
+          opacity: 0.6;
+        }
+      }
+
+      /* Randomization via inline styles */
+    </style>
+  </head>
+  <body>
+    <div class="sky">
+      <div class="stars"></div>
+      <div class="day-background" id="day-background"></div>
+      <div class="sun-glow" id="sun-glow"></div>
+      <div class="moon-glow" id="moon-glow"></div>
+      <div class="center-dot" id="center-dot"></div>
+      <div><img src="res/sun.svg" class="sun" id="sun" /></div>
+      <div><img src="res/moon.svg" class="moon" id="moon" /></div>
+    </div>
+
+    <!-- Repeat 50 times -->
+    <!-- You can also generate this with JavaScript if preferred -->
+    <!-- Randomize animation via inline styles -->
+    <!-- Here's a JS version to generate stars with random properties -->
+
+    <script>
+      const starsContainer = document.querySelector(".stars");
+      const starCount = 1;
+      const updateinterval = 6000; ///minute(for star and planet) (*10 for shooting star)
+      let opacity = 1;
+      function updateStars() {
+        console.log(starsContainer.children.length);
+        if (opacity == 1) {
+          // Remove stars
+          document.querySelectorAll(".star").forEach((star) => star.remove());
+        } else if (starsContainer.children.length < 2) {
+          // Generate stars again
+          for (let i = 0; i < starCount; i++) {
+            console.log("Startrrrr");
+            const star = document.createElement("div");
+            star.classList.add("star");
+
+            const tailLength =
+              (Math.random() * (7.5 - 5.0) + 5.0).toFixed(2) + "em";
+            const topOffset = (Math.random() * 100).toFixed(2) + "vh";
+            const duration = (Math.random() * (12 - 6) + 6).toFixed(2) + "s";
+            const delay = (Math.random() * 10).toFixed(2) + "s";
+            const width = `calc(${tailLength} / 6)`;
+
+            star.style.top = topOffset;
+            star.style.setProperty("--star-tail-length", tailLength);
+            star.style.setProperty("--star-tail-height", "2px");
+            star.style.setProperty("--star-width", width);
+            star.style.setProperty("--fall-duration", duration);
+            star.style.setProperty("--fall-delay", delay);
+            star.style.animation = `fall ${duration} ${delay} linear infinite, tail-fade ${duration} ${delay} ease-out infinite`;
+
+            starsContainer.appendChild(star);
+          }
+        }
+      }
+      //setInterval(updateStars, 600000);
+      setInterval(updateStars, updateinterval * 10);
+
+      /*
+
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement("div");
+        star.classList.add("star");
+
+        // Randomize values
+        const tailLength =
+          (Math.random() * (7.5 - 5.0) + 5.0).toFixed(2) + "em";
+        const topOffset = (Math.random() * 100).toFixed(2) + "vh";
+        const duration = (Math.random() * (12 - 6) + 6).toFixed(2) + "s";
+        const delay = (Math.random() * 10).toFixed(2) + "s";
+        const width = `calc(${tailLength} / 6)`;
+
+        // Apply styles
+        star.style.top = topOffset;
+        star.style.setProperty("--star-tail-length", tailLength);
+        star.style.setProperty("--star-tail-height", "2px");
+        star.style.setProperty("--star-width", width);
+        star.style.setProperty("--fall-duration", duration);
+        star.style.setProperty("--fall-delay", delay);
+        star.style.animation = `fall ${duration} ${delay} linear infinite, tail-fade ${duration} ${delay} ease-out infinite`;
+
+        starsContainer.appendChild(star);
+      }*/
+      /*
+          function updateMoonPosition() {
+            const moon = document.getElementById("moon");
+            const now = new Date();
+
+            // Convert time to angle (like an analog clock)
+            const hours = now.getHours() + now.getMinutes() / 60;
+            const angleDeg = (hours / 24) * 360 - 90; // Midnight is at top (12 o'clock)
+            const angleRad = angleDeg * (Math.PI / 180);
+
+            // Circle radius
+            const radius = 180; // distance from center (slightly smaller than container)
+            const centerX = 200;
+            const centerY = 200;
+
+            // Trigonometry: x = r * cos(angle), y = r * sin(angle)
+            const x = centerX + radius * Math.cos(angleRad) - 20; // -20 for moon size offset
+            const y = centerY + radius * Math.sin(angleRad) - 20;
+
+            moon.style.left = `${x}px`;
+            moon.style.top = `${y}px`;
+          }
+
+          updateMoonPosition();
+
+          // Optional: Update every minute
+          setInterval(updateMoonPosition, 60000);
+       */
+
+      var startX = 100;
+      var startY = 100;
+      var animationcomplete = false;
+      var current = { x: startX, y: startY };
+      var finalX;
+      var finalY;
+      //var customHours = 18; // 2 PM
+      const centerDot = document.getElementById("center-dot");
+      const centerX = centerDot.offsetLeft + centerDot.offsetWidth / 2;
+      const centerY = centerDot.offsetTop + centerDot.offsetHeight / 2;
+      var radius;
+      if (window.innerWidth / 2 < window.innerHeight) {
+        radius = window.innerWidth * 0.5;
+      } else {
+        radius = window.innerHeight * 0.9;
+      }
+      const daylightStart = 6; // 6 AM
+      const daylightEnd = 19; // 6 PM
+      const sun = document.getElementById("sun");
+      const sunglow = document.getElementById("sun-glow");
+      const sunSize = 60;
+      const screenheight = window.innerHeight;
+      let now = new Date();
+      const daysky = document.getElementById("day-background");
+
+      function updateSunPosition() {
+        //var customHours = 12; // 2 PM
+        //const customMinutes = 30; // 30 minutes
+
+        now = new Date();
+
+        //console.log(Date())
+        //const hours = customHours + customMinutes / 60;
+
+        // console.log(Date())
+        const hours = now.getHours() + now.getMinutes() / 60;
+
+        // Define sunrise/sunset time
+
+        // Normalize current hour to 0-12 range
+        let daylightHours = hours - daylightStart;
+        //daylightHours = Math.max(0, Math.min(12, daylightHours));
+        //daylightHours = customHours;
+        //daylightHours = hours - daylightStart;
+
+        // Map 0–12 to -90° to +90°
+        const angleDeg =
+          (daylightHours / (daylightEnd - daylightStart)) * 180 - 180;
+        const angleRad = angleDeg * (Math.PI / 180);
+
+        // Orbit radius (distance from centerDot to sun center)
+
+        // Get center position of the center-dot element
+
+        // Calculate sun's position along the circular orbit
+        const sunX = centerX + radius * Math.cos(angleRad);
+        const sunY = centerY + radius * Math.sin(angleRad);
+
+        // Size of the sun image (assumed square)
+        //if (animationcomplete) {
+        // Position the sun so its center aligns to the calculated position
+        sun.style.left = `${sunX - sunSize / 2}px`;
+        sun.style.top = `${sunY - sunSize / 2}px`;
+        sunglow.style.left = `${sunX - sunSize / 2 - 100}px`;
+        sunglow.style.top = `${sunY - sunSize / 2 - 100}px`;
+        // Optional: Hide sun at night
+        if (angleRad < -3.3 || angleRad > 0.15) {
+          sun.style.opacity = 0;
+        } else {
+          sun.style.opacity = 1;
+        }
+        /*customHours = customHours + 0.1;
+        if (customHours > 24) {
+          customHours = 0;
+        }*/
+        /*} else {
+          finalX = `${sunX - sunSize / 2}px`;
+          console.log(finalX);
+          finalY = window.innerHeight; // `${sunY - sunSize / 2}px`;
+        }*/
+      }
+      updateSunPosition();
+      // Initial and repeated update
+      //updateSunPosition();
+      setInterval(updateSunPosition, updateinterval); // update every minute
+
+      const moon = document.getElementById("moon");
+      const moonSize = 60;
+      const moonlightStart = 5.5; // 6 AM
+      const moonlightEnd = 19; // 6 PM
+      const moonglow = document.getElementById("moon-glow");
+      function updateMoonPosition() {
+        var customHours = 0; // 2 PM
+        const customMinutes = 30; // 30 minutes
+
+        now = new Date();
+
+        //console.log(Date())
+        //const hours = ((customHours + 12) % 24) + customMinutes / 60;
+
+        // console.log(Date());
+        const hours = ((now.getHours() + 12) % 24) + now.getMinutes() / 60;
+
+        // Define moonrise/moonset time
+
+        // Normalize current hour to 0-12 range
+        let moonlightHours = hours - moonlightStart;
+        //moonlightHours = Math.max(0, Math.min(12, moonlightHours));
+        //moonlightHours = (customHours + 12) % 24;
+        //moonlightHours = hours - moonlightStart;
+
+        // Map 0–12 to -90° to +90°
+        const angleDeg =
+          (moonlightHours / (moonlightEnd - moonlightStart)) * 180 - 180;
+        const angleRad = angleDeg * (Math.PI / 180);
+        //console.log(customHours);
+
+        // Orbit radius (distance from centerDot to moon center)
+
+        // Get center position of the center-dot element
+
+        // Calculate moon's position along the circular orbit
+        const moonX = centerX + radius * Math.cos(angleRad);
+        const moonY = centerY + radius * Math.sin(angleRad);
+        // console.log(moonY, "y moon");
+        // Size of the moon image (assumed square)
+        opacity =
+          Math.min(screenheight, moonY * 1.5 - screenheight) / screenheight;
+        daysky.style.opacity = opacity;
+        console.log(opacity);
+
+        // Position the moon so its center aligns to the calculated position
+        moon.style.left = `${moonX - moonSize / 2}px`;
+        moon.style.top = `${moonY - moonSize / 2}px`;
+        moonglow.style.left = `${moonX - moonSize / 2 - 100}px`;
+        moonglow.style.top = `${moonY - moonSize / 2 - 100}px`;
+        // Optional: Hide moon at night
+        if (angleRad < -3.3 || angleRad > 0.15) {
+          moon.style.opacity = 0;
+        } else {
+          moon.style.opacity = 1;
+        }
+        /* customHours = customHours + 0.1;
+        if (customHours > 24) {
+          customHours = 0;
+        }*/
+        /*} else {
+          finalX = `${sunX - sunSize / 2}px`;
+          console.log(finalX);
+          finalY = window.innerHeight; // `${sunY - sunSize / 2}px`;
+        }*/
+      }
+      updateMoonPosition();
+      // Initial and repeated update
+      //updateSunPosition();
+      setInterval(updateMoonPosition, updateinterval); // update every minute
+
+      updateStars(); //update star after opacity updated
+      /*
+      var leftPos = 0;
+      var dist;
+      function moveDiv(timestamp) {
+        leftPos += 1;
+        sun.style.left = leftPos + "px";
+        dist = Math.floor(finalX - sun.getBoundingClientRect().left);
+        console.log(dist);
+        if (dist != 0) {
+          requestAnimationFrame(moveDiv);
+        }
+      }
+
+      requestAnimationFrame(moveDiv);*/
+    </script>
+  </body>
+</html>
