@@ -1,0 +1,196 @@
+
+body {
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
+background: radial-gradient(
+    ellipse at bottom,
+    #0d1d31 0%,
+    #0c0d13 100%
+);
+overflow: hidden;
+margin: 0;
+}
+.sun {
+width: 100px;
+height: 100px;
+left: -50%;
+top: -50%;
+transform: scale(0); /* Start tiny */
+transform-origin: center center;
+position: absolute;
+animation: blowout 2s forwards ease-in-out;
+}
+.sun-glow {
+position: absolute;
+width: 300px;
+height: 300px;
+transform: scale(0); /* Start tiny */
+background: radial-gradient(
+    circle,
+    rgb(255, 204, 0) 0%,
+    rgba(255, 150, 0, 0.2) 60%,
+    transparent 100%
+);
+border-radius: 50%;
+filter: blur(40px);
+animation: blowout 2s forwards ease-in-out,
+    pulseGlow 3s ease-in-out infinite 2s;
+}
+
+@keyframes pulseGlow {
+0%,
+100% {
+    opacity: 0.8;
+}
+50% {
+    opacity: 1;
+}
+}
+.day-background {
+position: fixed;
+top: 0;
+left: 0;
+width: 100vw;
+height: 100vh;
+background-color: rgb(0, 238, 255); /* transparent white */
+pointer-events: none; /* allows interactions with elements above */
+z-index: -10; /* stay behind everything */
+transition: background-color 5s ease-in-out, fadein 5s ease-in-out;
+opacity: 0;
+}
+.moon {
+width: 100px;
+height: 100px;
+left: 50%;
+top: 50%;
+transform: scale(0); /* Start tiny */
+transform-origin: center center;
+position: absolute;
+animation: blowout 2s forwards ease-in-out;
+}
+.moon-glow {
+position: absolute;
+left: 50%;
+top: 50%;
+width: 300px;
+height: 300px;
+transform: scale(0);
+background: radial-gradient(
+    circle,
+    rgba(208, 251, 255, 0.586) 0%,
+    rgba(176, 214, 255, 0.2) 60%,
+    transparent 100%
+);
+border-radius: 50%;
+filter: blur(40px);
+animation: blowout 2s forwards ease-in-out,
+    pulseGlow 3s ease-in-out infinite;
+z-index: 0;
+}
+.center-dot {
+position: absolute;
+left: 50%;
+top: 99%;
+width: 8px;
+height: 8px;
+background: #fff;
+border-radius: 50%;
+transform: translate(-50%, -50%);
+}
+@keyframes blowout {
+to {
+    transform: scale(1);
+}
+}
+@keyframes fadein {
+to {
+    opacity: 1;
+}
+}
+@keyframes skyFade {
+from {
+    background: linear-gradient(to top, #001d3d 0%, #001d3d 100%);
+}
+to {
+    background: linear-gradient(to top, #ffcc70 0%, #87ceeb 100%);
+}
+}
+
+.stars {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 120%;
+transform: rotate(-40deg);
+}
+
+.star {
+position: absolute;
+left: 0;
+width: 0em;
+height: 2px;
+color: white;
+background: linear-gradient(45deg, currentColor, transparent);
+border-radius: 50%;
+filter: drop-shadow(0 0 6px currentColor);
+transform: translate3d(150em, 0, 0);
+animation: fall 9s linear infinite, tail-fade 9s ease-out infinite;
+}
+
+.star::before,
+.star::after {
+position: absolute;
+content: "";
+top: 0;
+left: calc(1em / -2);
+width: 1em;
+height: 100%;
+background: linear-gradient(
+    45deg,
+    transparent,
+    currentColor,
+    transparent
+);
+border-radius: inherit;
+animation: blink 1s linear infinite;
+}
+
+.star::before {
+transform: rotate(45deg);
+}
+
+.star::after {
+transform: rotate(-45deg);
+}
+
+@keyframes fall {
+to {
+    transform: translate3d(-90em, 0, 0);
+}
+}
+
+@keyframes tail-fade {
+0%,
+50% {
+    width: 6em;
+    opacity: 1;
+}
+70%,
+80% {
+    width: 0;
+    opacity: 0.4;
+}
+100% {
+    width: 0;
+    opacity: 0;
+}
+}
+
+@keyframes blink {
+50% {
+    opacity: 0.6;
+}
+}
