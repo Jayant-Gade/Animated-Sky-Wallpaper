@@ -129,6 +129,7 @@ export function updateMoonPosition() {
   //opacity = Math.min(screenheight, moonY * 1.5 - screenheight) / screenheight;
   setOpacity(Math.min(screenheight, moonY * 1.5 - screenheight) / screenheight);
   daysky.style.opacity = opacity;
+
   console.log(opacity);
 
   // Position the moon so its center aligns to the calculated position

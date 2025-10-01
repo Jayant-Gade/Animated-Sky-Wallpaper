@@ -7,6 +7,10 @@ export function setOpacity(newValue) {
 
 export var animationcomplete = true;
 
+export function setAnimationComplete() {
+  animationcomplete = true;
+  console.log(`✅ Initial Animations completed`);
+}
 ///debugging
 
 export var hours = 0;

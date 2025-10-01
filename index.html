@@ -15,6 +15,15 @@
       <div class="center-dot" id="center-dot"></div>
       <div><img src="res/sun.svg" class="sun" id="sun" /></div>
       <div><img src="res/moon.svg" class="moon" id="moon" /></div>
+
+      <svg id="scene" preserveAspectRatio="none">
+        <!--Land mask hides everything behind it-->
+        <path id="land-mask"></path>
+        <!-- Water is drawn first, so it appears behind the land -->
+        <path id="wave"></path>
+        <!-- Land is drawn last, so it appears on top of the water -->
+        <path id="land"></path>
+      </svg>
     </div>
 
     <script src="js/main.js" type="module"></script>

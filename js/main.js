@@ -1,5 +1,6 @@
 import { updateMoonPosition, updateSunPosition } from "./celestials.js";
 import { updateinterval } from "./config.js";
+import { setLand, startLandAnimation } from "./land.js";
 import { updateStars } from "./stars.js";
 
 updateSunPosition();
@@ -15,3 +16,5 @@ updateStars(); //update star after opacity updated
 
 //setInterval(updateStars, 600000);
 setInterval(updateStars, updateinterval * 10);
+startLandAnimation();
+setInterval(setLand, updateinterval); // update every minute
