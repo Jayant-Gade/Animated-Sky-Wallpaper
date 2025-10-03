@@ -206,3 +206,14 @@ to {
     opacity: 0.6;
 }
 }
+
+
+/* --- Style for the 2D Model --- */
+#player-model {
+    position: absolute;
+    bottom: 40%; /* Position it above the land/water line */
+    left: 50%;
+    transform: translateX(-50%); /* Center it horizontally */
+    z-index: 20; /* Make sure it's on top of the scene SVG */
+    /* Width, height, and background-image will be set by JavaScript */
+}

@@ -16,6 +16,8 @@
       <div><img src="res/sun.svg" class="sun" id="sun" /></div>
       <div><img src="res/moon.svg" class="moon" id="moon" /></div>
 
+      <!-- 2D Model Container -->
+
       <svg id="scene" preserveAspectRatio="none">
         <!--Land mask hides everything behind it-->
         <path id="land-mask"></path>
@@ -24,6 +26,7 @@
         <!-- Land is drawn last, so it appears on top of the water -->
         <path id="land"></path>
       </svg>
+      <div id="player-model"></div>
     </div>
 
     <script src="js/main.js" type="module"></script>

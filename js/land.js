@@ -136,7 +136,7 @@ function animationLoop() {
 
 // This function will be called once to set the initial size.
 export function setLand() {
-  console.log("Setting initial size...");
+  //console.log("Setting initial size...");
   viewportWidth = window.innerWidth;
   if (svg) {
     svg.setAttribute("width", viewportWidth);
