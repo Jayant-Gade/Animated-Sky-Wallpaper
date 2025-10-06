@@ -217,3 +217,10 @@ to {
     z-index: 20; /* Make sure it's on top of the scene SVG */
     /* Width, height, and background-image will be set by JavaScript */
 }
+
+#tree1-model {
+    position: absolute; /* This tells the browser to position the tree
+                           using 'left' and 'top', ignoring any parent
+                           flexbox or grid rules. */
+    z-index: 5;         /* Optional: ensures the tree is behind the player */
+}

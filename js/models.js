@@ -2,13 +2,14 @@
 
 // The import path now points to the player's new main script file.
 import { playerModel } from "./models/player/script.js";
-
+import { tree1Model } from "./models/tree1/script.js";
 // If you create an enemy, its structure would be identical:
 
 // import { enemyModel } from './models/enemy/script.js';
 
 const allModels = [
   playerModel,
+  tree1Model,
   // enemyModel
 ];
 
