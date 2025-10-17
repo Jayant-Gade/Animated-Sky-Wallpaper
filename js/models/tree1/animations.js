@@ -21,7 +21,7 @@ const animationData = {
     loop: true,
   },
   fastWind: {
-    frames: [1, 2, 3, 2, 1, 0], // A more vigorous gust
+    frames: [1, 2, 3, 0], // A more vigorous gust
     speed: 150,
     loop: true,
   },

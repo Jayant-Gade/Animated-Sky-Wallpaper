@@ -9,14 +9,14 @@ export const NUM_ROWS = 1;
 
 // --- Gameplay Constants ---
 // TODO: Adjust the on-screen size of this tree.
-export const DISPLAY_WIDTH = 128;
-export const DISPLAY_HEIGHT = 128;
+export const DISPLAY_WIDTH = 300;
+export const DISPLAY_HEIGHT = 300;
 
 // --- Location Constants ---
 // TODO: Set the base location of this tree as a percentage of the screen.
 // (0,0) is the top-left, (1,1) is the bottom-right.
-export const BASE_X_PERCENT = 0.92; // 80% from the left edge
-export const BASE_Y_PERCENT = 0.75; // 65% from the top edge
+export const BASE_X_PERCENT = 0.85; // 80% from the left edge
+export const BASE_Y_PERCENT = 0.11; // 65% from the bottom edge
 
 // --- AI Constants ---
 export const AI_DECISION_INTERVAL = 5000; // AI makes a new decision every 7 seconds

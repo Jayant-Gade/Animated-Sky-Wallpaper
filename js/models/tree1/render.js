@@ -25,7 +25,7 @@ export function render() {
 
   // This tree's position is fixed, so we just use state.x and state.y
   state.element.style.left = `${state.x}px`;
-  state.element.style.top = `${state.y}px`;
+  state.element.style.bottom = `${state.y}px`;
 
   const animData = getCurrentAnimationData();
   const frameNumber = getCurrentFrame();
