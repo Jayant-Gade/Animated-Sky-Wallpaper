@@ -1,7 +1,6 @@
 // js/models/cloud/const.js
 
 // --- Cloud Generation Constants ---
-// TODO: Art-direct your clouds here.
 
 // --- 1. Base Ellipse Shape ---
 // This is the starting shape before we make any cuts.
